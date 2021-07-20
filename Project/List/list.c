@@ -1,4 +1,5 @@
 #include "list.h"
+static void CopyToNode(Item item,LinkList pnode);
 /*接口函数*/
 /*把链表设置为空链表*/
 LinkList InitializeList(LinkList *plist)
@@ -74,7 +75,62 @@ Status ListDeletePlayer(LinkList *plist,char str,Item item)
     return Ok;
 }
 
+/*创建存放项目的节点，并把它添加到*/
+/*由plist指向的链表尾部(尾插法)*/
+bool AddItem(Item item,LinkList *plist)
+{
+    LinkList pnew;
+    LinkList scan = *plist;
+    pnew = (LinkList)malloc(sizeof(Node));
+    if(pnew == NULL)
+    return false;
+    CopyToNode(item,pnew);
+    pnew ->next = NULL;             /*pnew指向链表尾部*/
+    if(scan == NULL)
+    {
+        *plist = pnew;
+    }
+    else
+    {
+        while(scan ->next!=NULL)
+        {
+            scan = scan -> next;
+        }
+        scan->next = pnew;
+    }
+    return true;
+}
 
+/*访问每个节点并对它们分别执行由pfun指向的函数*/
+void Traverse(const LinkList *plist,void(*pfun)(Item item))
+{
+    LinkList pnode;
+    pnode = *plist;
+    while(pnode != NULL)
+    {
+      (*pfun)(pnode->item);
+      pnode = pnode ->next;
+    }    
+}
+
+/*单链表的整表删除*/
+Status ClearList(LinkList *plist)
+{
+ LinkList psave;
+ while(*plist != NULL)
+ {
+     psave = (*plist)->next;   /*保存下一个节点的地址*/
+     free(*plist);             /*释放当前节点*/
+     *plist = psave;           /*前进到下一个节点*/
+ }
+
+}
+
+/*把一个项目复制到一个节点中*/
+static void CopyToNode(Item item,LinkList pnode)
+{
+    pnode ->item = item;
+}
 
 
 
