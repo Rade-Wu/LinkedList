@@ -27,4 +27,14 @@ typedef struct Node
 }Node;
 typedef struct Node *LinkList;
 
+LinkList InitializeList(LinkList *plist);
+bool ListIsEmpty(const LinkList *plist);
+unsigned int ListItemCount(const LinkList *plist);
+LinkList FindX(LinkList L,Item item,char str);
+LinkList PreviousFindX(LinkList L,Item item,char str);
+Status ListDeletePlayer(LinkList *plist,char str,Item item);
+bool AddItem(Item item,LinkList *plist);
+void Traverse(const LinkList *plist,void(*pfun)(Item item));
+Status ClearList(LinkList *plist);
+
 #endif 
